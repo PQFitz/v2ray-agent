@@ -2095,7 +2095,7 @@ installV2Ray() {
     if [[ "${coreInstallType}" != "2" && "${coreInstallType}" != "3" ]]; then
         if [[ "${selectCoreType}" == "2" ]]; then
 
-            version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/v2ray-core/releases?per_page=10 | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
+            version=$(curl -s https://api.github.com/repos/v2fly/v2ray-core/releases?per_page=10 | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
         else
             version=${v2rayCoreVersion}
         fi
@@ -2134,7 +2134,7 @@ installSingBox() {
 
     if [[ ! -f "/etc/v2ray-agent/sing-box/sing-box" ]]; then
 
-        version=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/SagerNet/sing-box/releases?per_page=20" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
+        version=$(curl -s "https://api.github.com/repos/SagerNet/sing-box/releases?per_page=20" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
 
         echoContent green " ---> sing-box版本:${version}"
 
@@ -2188,7 +2188,7 @@ installXray() {
 
     if [[ ! -f "/etc/v2ray-agent/xray/xray" ]]; then
 
-        version=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
+        version=$(curl -s "https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
 
         echoContent green " ---> Xray-core版本:${version}"
         if [[ "${release}" == "alpine" ]]; then
@@ -2206,7 +2206,7 @@ installXray() {
             unzip -o "/etc/v2ray-agent/xray/${xrayCoreCPUVendor}.zip" -d /etc/v2ray-agent/xray >/dev/null
             rm -rf "/etc/v2ray-agent/xray/${xrayCoreCPUVendor}.zip"
 
-            version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases?per_page=1 | jq -r '.[]|.tag_name')
+            version=$(curl -s https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases?per_page=1 | jq -r '.[]|.tag_name')
             echoContent skyBlue "------------------------Version-------------------------------"
             echo "version:${version}"
             rm /etc/v2ray-agent/xray/geo* >/dev/null 2>&1
@@ -2256,11 +2256,11 @@ v2rayVersionManageMenu() {
         echoContent yellow "2.不保证回退后一定可以正常使用"
         echoContent yellow "3.如果回退的版本不支持当前的config，则会无法连接，谨慎操作"
         echoContent skyBlue "------------------------Version-------------------------------"
-        curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -5 | awk '{print ""NR""":"$0}'
+        curl -s https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -5 | awk '{print ""NR""":"$0}'
 
         echoContent skyBlue "--------------------------------------------------------------"
         read -r -p "请输入要回退的版本:" selectV2rayVersionType
-        version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -5 | awk '{print ""NR""":"$0}' | grep "${selectV2rayVersionType}:" | awk -F "[:]" '{print $2}')
+        version=$(curl -s https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -5 | awk '{print ""NR""":"$0}' | grep "${selectV2rayVersionType}:" | awk -F "[:]" '{print $2}')
         if [[ -n "${version}" ]]; then
             updateV2Ray "${version}"
         else
@@ -2310,10 +2310,10 @@ xrayVersionManageMenu() {
         echoContent yellow "2.不保证回退后一定可以正常使用"
         echoContent yellow "3.如果回退的版本不支持当前的config，则会无法连接，谨慎操作"
         echoContent skyBlue "------------------------Version-------------------------------"
-        curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==false)|.tag_name" | awk '{print ""NR""":"$0}'
+        curl -s "https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==false)|.tag_name" | awk '{print ""NR""":"$0}'
         echoContent skyBlue "--------------------------------------------------------------"
         read -r -p "请输入要回退的版本:" selectXrayVersionType
-        version=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==false)|.tag_name" | awk '{print ""NR""":"$0}' | grep "${selectXrayVersionType}:" | awk -F "[:]" '{print $2}')
+        version=$(curl -s "https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==false)|.tag_name" | awk '{print ""NR""":"$0}' | grep "${selectXrayVersionType}:" | awk -F "[:]" '{print $2}')
         if [[ -n "${version}" ]]; then
             updateXray "${version}"
         else
@@ -2339,7 +2339,7 @@ xrayVersionManageMenu() {
 updateGeoSite() {
     echoContent yellow "\n来源 https://gh.cdn.fullcone.cn/https://github.com/Loyalsoldier/v2ray-rules-dat"
 
-    version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases?per_page=1 | jq -r '.[]|.tag_name')
+    version=$(curl -s https://api.github.com/repos/Loyalsoldier/v2ray-rules-dat/releases?per_page=1 | jq -r '.[]|.tag_name')
     echoContent skyBlue "------------------------Version-------------------------------"
     echo "version:${version}"
     rm ${configPath}../geo* >/dev/null
@@ -2364,7 +2364,7 @@ updateV2Ray() {
         if [[ -n "$1" ]]; then
             version=$1
         else
-            version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
+            version=$(curl -s https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
         fi
         # 使用锁定的版本
         if [[ -n "${v2rayCoreVersion}" ]]; then
@@ -2387,7 +2387,7 @@ updateV2Ray() {
         if [[ -n "$1" ]]; then
             version=$1
         else
-            version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
+            version=$(curl -s https://api.github.com/repos/v2fly/v2ray-core/releases | jq -r '.[]|select (.prerelease==false)|.tag_name' | grep -v 'v5' | head -1)
         fi
 
         if [[ -n "${v2rayCoreVersion}" ]]; then
@@ -2441,7 +2441,7 @@ updateXray() {
         if [[ -n "$1" ]]; then
             version=$1
         else
-            version=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
+            version=$(curl -s "https://api.github.com/repos/XTLS/Xray-core/releases?per_page=5" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
         fi
 
         echoContent green " ---> Xray-core版本:${version}"
@@ -2463,7 +2463,7 @@ updateXray() {
         if [[ -n "$1" ]]; then
             version=$1
         else
-            version=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/Xray-core/releases?per_page=10" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
+            version=$(curl -s "https://api.github.com/repos/XTLS/Xray-core/releases?per_page=10" | jq -r ".[]|select (.prerelease==${prereleaseStatus})|.tag_name" | head -1)
         fi
 
         if [[ -n "$1" ]]; then
@@ -6436,7 +6436,7 @@ EOF
             echoContent yellow " ---> ${line}已存在，跳过"
         else
             local geositeStatus
-            geositeStatus=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
+            geositeStatus=$(curl -s "https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
 
             if [[ "${geositeStatus}" == "null" ]]; then
                 routingRule=$(echo "${routingRule}" | jq -r '.domain += ["geosite:'"${line}"'"]')
@@ -7084,7 +7084,7 @@ initSingBoxRules() {
     local ruleSet=[]
     while read -r line; do
         local geositeStatus
-        geositeStatus=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/SagerNet/sing-geosite/contents/geosite-${line}.srs?ref=rule-set" | jq .message)
+        geositeStatus=$(curl -s "https://api.github.com/repos/SagerNet/sing-geosite/contents/geosite-${line}.srs?ref=rule-set" | jq .message)
 
         if [[ "${geositeStatus}" == "null" ]]; then
             ruleSet=$(echo "${ruleSet}" | jq -r ". += [{\"tag\":\"${line}_$2\",\"type\":\"remote\",\"format\":\"binary\",\"url\":\"https://gh.cdn.fullcone.cn/https://raw.githubusercontent.com/SagerNet/sing-geosite/rule-set/geosite-${line}.srs\",\"download_detour\":\"01_direct_outbound\"}]")
@@ -7232,7 +7232,7 @@ setSocks5OutboundRouting() {
                 echoContent yellow " ---> ${line}已存在，跳过"
             else
                 local geositeStatus
-                geositeStatus=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
+                geositeStatus=$(curl -s "https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
 
                 if [[ "${geositeStatus}" == "null" ]]; then
                     domainRules=$(echo "${domainRules}" | jq -r ". += [\"geosite:${line}\"]")
@@ -7421,7 +7421,7 @@ addXrayDNSConfig() {
     local domains=[]
     while read -r line; do
         local geositeStatus
-        geositeStatus=$(curl -s "https://gh.cdn.fullcone.cn/https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
+        geositeStatus=$(curl -s "https://api.github.com/repos/v2fly/domain-list-community/contents/data/${line}" | jq .message)
 
         if [[ "${geositeStatus}" == "null" ]]; then
             domains=$(echo "${domains}" | jq -r '. += ["geosite:'"${line}"'"]')
@@ -8911,7 +8911,7 @@ manageReality() {
 # 安装reality scanner
 installRealityScanner() {
     if [[ ! -f "/etc/v2ray-agent/xray/reality_scan/RealiTLScanner-linux-64" ]]; then
-        version=$(curl -s https://gh.cdn.fullcone.cn/https://api.github.com/repos/XTLS/RealiTLScanner/releases?per_page=1 | jq -r '.[]|.tag_name')
+        version=$(curl -s https://api.github.com/repos/XTLS/RealiTLScanner/releases?per_page=1 | jq -r '.[]|.tag_name')
         wget -c -q -P /etc/v2ray-agent/xray/reality_scan/ "https://gh.cdn.fullcone.cn/https://github.com/XTLS/RealiTLScanner/releases/download/${version}/RealiTLScanner-linux-64"
         chmod 655 /etc/v2ray-agent/xray/reality_scan/RealiTLScanner-linux-64
     fi
